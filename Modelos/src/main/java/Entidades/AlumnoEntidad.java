@@ -8,12 +8,12 @@ import javax.persistence.*;
  * @author Angel Ruiz Garcia - 00000248171
  */
 @Entity
-@Table(name = "alumnos")
+@Table(name = "tblAlumnos")
 public class AlumnoEntidad implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "idAlumnos")
     private Long id;
 
     @Column(name = "nombres", length = 50, nullable = false)
@@ -37,13 +37,13 @@ public class AlumnoEntidad implements Serializable {
     public AlumnoEntidad() {
     }
     
-    public AlumnoEntidad(String nombres, String paterno, String materno, String pasatiempo, boolean borrado, boolean activo) {
+    public AlumnoEntidad(String nombres, String paterno, String materno, String pasatiempo) {
         this.nombres = nombres;
         this.paterno = paterno;
         this.materno = materno;
         this.pasatiempo = pasatiempo;
-        this.borrado = borrado;
-        this.activo = activo;
+        this.borrado = false;
+        this.activo = true;
     }
     
     public Long getId() {
