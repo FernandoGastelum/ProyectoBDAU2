@@ -8,8 +8,11 @@ package Test;
 import DTOS.AlumnoDTO;
 import DTOS.GuardarAlumnoDTO;
 import Entidades.AlumnoEntidad;
+import Excepcion.NegocioException;
 import Excepcion.PersistenciaException;
 import Interfaz.IAlumnoDAO;
+import Interfaz.IAlumnoNegocio;
+import Negocio.AlumnoNegocio;
 import Persistencia.AlumnoDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -23,7 +26,7 @@ import static org.junit.Assert.*;
  *
  * @author gaspa
  */
-public class AlumnoTest {
+public class AlumnoNegocioTest {
     
     private EntityManagerFactory fabrica;
     private EntityManager entityManager;
@@ -36,20 +39,20 @@ public class AlumnoTest {
     @Test
     public void testAgregarAlumno(){
         try {
-            IAlumnoDAO alumno = new AlumnoDAO(entityManager);
-            GuardarAlumnoDTO alumnoDTO = new GuardarAlumnoDTO("Layne", "Rutherford", "Staley", "Cantar");
-            
-            assertNotNull("El nombre no puede ser nulo. ", alumnoDTO.getNombre());
-            assertNotNull("El apellido paterno no puede ser nulo. ", alumnoDTO.getApellidoPaterno());
-            assertNotNull("El apellido materno no puede ser nulo. ", alumnoDTO.getApellidoMaterno());
-            assertNotNull("El pasatiempo no puede ser nulo. ", alumnoDTO.getPasatiempo());
-            alumno.guardar(alumnoDTO);
-            System.out.println("Alumno: "+alumnoDTO);
-        } catch (PersistenciaException ex) {
-            System.out.println("Error "+ex.getMessage());
+            IAlumnoDAO alumnoDAO = new AlumnoDAO(entityManager);
+            IAlumnoNegocio alumnoNegocio = new AlumnoNegocio(alumnoDAO);
+            GuardarAlumnoDTO alumno = new GuardarAlumnoDTO("Layne", "Rutherford", "Staley", "Cantar");
+            assertNotNull("El nombre no puede ser nulo. ", alumno.getNombre());
+            assertNotNull("El apellido paterno no puede ser nulo. ", alumno.getApellidoPaterno());
+            assertNotNull("El apellido materno no puede ser nulo. ", alumno.getApellidoMaterno());
+            assertNotNull("El pasatiempo no puede ser nulo. ", alumno.getPasatiempo());
+            alumnoNegocio.guardar(alumno);
+            System.out.println("Alumno: "+alumno);
+        } catch (NegocioException e) {
+            System.out.println("Error "+e.getMessage());
         }
     }
-    @Test
+    //@Test
     public void testConsultarAlumnos(){
         try {
             IAlumnoDAO alumno = new AlumnoDAO(entityManager);

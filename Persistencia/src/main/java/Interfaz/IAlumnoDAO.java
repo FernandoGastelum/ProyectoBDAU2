@@ -5,6 +5,7 @@
 package Interfaz;
 
 import DTOS.AlumnoDTO;
+import DTOS.GuardarAlumnoDTO;
 import Entidades.AlumnoEntidad;
 import Excepcion.PersistenciaException;
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.List;
  * @author Ilian Fernando Gastelum Romo
  */
 public interface IAlumnoDAO {
-    void guardar(AlumnoEntidad alumno) throws PersistenciaException;
+    AlumnoEntidad guardar(GuardarAlumnoDTO alumno) throws PersistenciaException;
     
-    public AlumnoEntidad obtenerPorID(Long id) throws PersistenciaException;
+    AlumnoEntidad obtenerPorID(Long id) throws PersistenciaException;
     
-    public List<AlumnoEntidad> obtener() throws PersistenciaException;
+    List<AlumnoEntidad> obtener() throws PersistenciaException;
+    
+    AlumnoDTO obtenerAlumnoDTO(Long id);
 }

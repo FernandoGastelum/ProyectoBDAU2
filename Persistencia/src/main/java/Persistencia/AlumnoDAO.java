@@ -5,12 +5,17 @@
 package Persistencia;
 
 import DTOS.AlumnoDTO;
+import DTOS.GuardarAlumnoDTO;
 import Entidades.AlumnoEntidad;
 import Excepcion.PersistenciaException;
 import Interfaz.IAlumnoDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -22,10 +27,17 @@ public class AlumnoDAO implements IAlumnoDAO{
         this.em = em;
     }
     @Override
-    public void guardar(AlumnoEntidad alumno) throws PersistenciaException {
+    public AlumnoEntidad guardar(GuardarAlumnoDTO alumno) throws PersistenciaException {
         em.getTransaction().begin();
-        em.persist(alumno);
+        
+        AlumnoEntidad alumnoEntidad = new AlumnoEntidad(alumno.getNombre(), 
+                                                        alumno.getApellidoPaterno(), 
+                                                        alumno.getApellidoMaterno(), 
+                                                        alumno.getPasatiempo());
+        
+        em.persist(alumnoEntidad);
         em.getTransaction().commit();
+        return alumnoEntidad;
     }
 
     @Override
@@ -48,6 +60,29 @@ public class AlumnoDAO implements IAlumnoDAO{
             throw new PersistenciaException("No se encontraron resultados");
         }
         return query.getResultList();
+    }
+    
+    @Override
+    public AlumnoDTO obtenerAlumnoDTO(Long id){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<AlumnoDTO> cq = cb.createQuery(AlumnoDTO.class);
+        Root<AlumnoEntidad> alumno = cq.from(AlumnoEntidad.class);
+        cq.select(cb.construct(AlumnoDTO.class,
+                alumno.get("id"),
+                alumno.get("nombres"),
+                alumno.get("paterno"),
+                alumno.get("materno"),
+                alumno.get("pasatiempo"),
+                alumno.get("activo")))
+          .where(cb.equal(alumno.get("id"), id));
+
+        TypedQuery<AlumnoDTO> query = em.createQuery(cq);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
 }

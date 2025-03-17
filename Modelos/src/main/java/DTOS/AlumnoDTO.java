@@ -6,26 +6,31 @@ package DTOS;
  */
 public class AlumnoDTO {
     
-    private int id;
+    private Long id;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String pasatiempo;
     private String estatus;
 
-    public AlumnoDTO(int id, String nombre, String apellidoPaterno, String apellidoMaterno, String pasatiempo, String estatus) {
+    public AlumnoDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String pasatiempo, Boolean estatus) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.pasatiempo = pasatiempo;
-        this.estatus = estatus;
+        if(estatus==true){
+            this.estatus = "Activo";
+        }else{
+            this.estatus = "Inactivo";
+        }
+        
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
