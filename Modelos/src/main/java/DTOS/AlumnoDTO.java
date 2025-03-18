@@ -71,7 +71,7 @@ public class AlumnoDTO {
 
     @Override
     public String toString() {
-        return "AlumnoDTO{" + "id=" + id + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", pasatiempo=" + pasatiempo + ", estatus=" + estatus + '}';
+        return "\nAlumnoDTO\nID: " + id + "\nNombre/s: " + nombre + "\nApellido Paterno: " + apellidoPaterno + "\n Apellido Materno: " + apellidoMaterno + "\nPasatiempo: " + pasatiempo + "\nEstatus: " + estatus;
     }
     
 }
