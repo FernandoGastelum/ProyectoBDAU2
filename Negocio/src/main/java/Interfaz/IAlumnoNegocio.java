@@ -8,12 +8,15 @@ import DTOS.AlumnoDTO;
 import DTOS.GuardarAlumnoDTO;
 import Entidades.AlumnoEntidad;
 import Excepcion.NegocioException;
+import java.util.List;
 
 /**
  *
  * @author gaspa
  */
 public interface IAlumnoNegocio {
+    
     AlumnoDTO guardar(GuardarAlumnoDTO alumno) throws NegocioException;
-    AlumnoDTO obtener() throws NegocioException;
+    
+    List<AlumnoDTO> obtener() throws NegocioException;
 }
