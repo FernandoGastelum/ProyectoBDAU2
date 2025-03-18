@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Negocio;
 
 import DTOS.AlumnoDTO;
@@ -11,8 +7,9 @@ import Excepcion.NegocioException;
 import Excepcion.PersistenciaException;
 import Interfaz.IAlumnoDAO;
 import Interfaz.IAlumnoNegocio;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -24,6 +21,7 @@ public class AlumnoNegocio implements IAlumnoNegocio{
     public AlumnoNegocio(IAlumnoDAO alumnoDAO){
         this.alumnoDAO = alumnoDAO;
     }
+    
     @Override
     public AlumnoDTO guardar(GuardarAlumnoDTO alumno) throws NegocioException {
         if(this.reglasNegocioGuardar()){
@@ -38,12 +36,21 @@ public class AlumnoNegocio implements IAlumnoNegocio{
     }
 
     @Override
-    public AlumnoDTO obtener() throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<AlumnoDTO> obtener() throws NegocioException {
+        if(this.reglasNegocioGuardar()){
+            try {
+                List<AlumnoEntidad> listaAlumno = this.alumnoDAO.obtener();
+                return listaAlumno.stream().map(alumno -> this.alumnoDAO.obtenerAlumnoDTO(alumno.getId())).collect(Collectors.toList());
+            } catch (PersistenciaException ex) {
+                System.out.println("Error: "+ex.getMessage());
+            }
+        }
+        return Collections.emptyList();
     }
     
     public boolean reglasNegocioGuardar(){
         return true;
     }
+    
     
 }
