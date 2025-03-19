@@ -12,8 +12,10 @@ import Excepcion.NegocioException;
 import Excepcion.PersistenciaException;
 import Interfaz.IAlumnoDAO;
 import Interfaz.IAlumnoNegocio;
+import Interfaz.IEntityManager;
 import Negocio.AlumnoNegocio;
 import Persistencia.AlumnoDAO;
+import Persistencia.EntityManagerDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -28,13 +30,11 @@ import static org.junit.Assert.*;
  */
 public class AlumnoNegocioTest {
     
-    private EntityManagerFactory fabrica;
-    private EntityManager entityManager;
+    public IEntityManager entityManager;
     
     @Before
     public void setUp() {
-        this.fabrica = Persistence.createEntityManagerFactory("Conexion");
-        this.entityManager = fabrica.createEntityManager();
+        entityManager = new EntityManagerDAO();
     }
     @Test
     public void testAgregarAlumno(){
@@ -52,16 +52,19 @@ public class AlumnoNegocioTest {
             System.out.println("Error "+e.getMessage());
         }
     }
-    //@Test
-    public void testConsultarAlumnos(){
+    @Test
+    public void testConsultarAlumnos() throws NegocioException{
         try {
-            IAlumnoDAO alumno = new AlumnoDAO(entityManager);
-            GuardarAlumnoDTO alumnoDTO = new GuardarAlumnoDTO("Peter", "Thomas", "Ratajczyk", "Cantar");
-            alumno.guardar(alumnoDTO);
-            List<AlumnoEntidad> alumnos = alumno.obtener();
+            IAlumnoDAO alumnoDAO = new AlumnoDAO(entityManager);
+            IAlumnoNegocio alumnoNegocio = new AlumnoNegocio(alumnoDAO);
+            GuardarAlumnoDTO alumnoDTO1 = new GuardarAlumnoDTO("Peter", "Thomas", "Ratajczyk", "Cantar");
+            GuardarAlumnoDTO alumnoDTO2 = new GuardarAlumnoDTO("Layne", "Rutherford", "Staley", "Cantar");
+            alumnoNegocio.guardar(alumnoDTO1);
+            alumnoNegocio.guardar(alumnoDTO2);
+            List<AlumnoDTO> alumnos = alumnoNegocio.obtener();
             assertEquals("El numero de alumnos es incorrecto, deberian de ser 2",2, alumnos.size());
             System.out.println("Lista de alumnos: "+alumnos);
-        } catch (PersistenciaException ex) {
+        } catch (NegocioException ex) {
             System.out.println("Error "+ex.getMessage());
         }
     }
