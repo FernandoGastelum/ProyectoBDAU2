@@ -5,16 +5,14 @@ package Test;
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
 
-import DTOS.AlumnoDTO;
 import DTOS.GuardarAlumnoDTO;
 import Entidades.AlumnoEntidad;
 import Excepcion.PersistenciaException;
 import Interfaz.IAlumnoDAO;
+import Interfaz.IEntityManager;
 import Persistencia.AlumnoDAO;
+import Persistencia.EntityManagerDAO;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,13 +23,10 @@ import static org.junit.Assert.*;
  */
 public class AlumnoTest {
     
-    private EntityManagerFactory fabrica;
-    private EntityManager entityManager;
-    
+    public IEntityManager entityManager;
     @Before
     public void setUp() {
-        this.fabrica = Persistence.createEntityManagerFactory("Conexion");
-        this.entityManager = fabrica.createEntityManager();
+        entityManager = new EntityManagerDAO();
     }
     @Test
     public void testAgregarAlumno(){
